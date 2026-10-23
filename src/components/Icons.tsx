@@ -87,3 +87,20 @@ export function PlayIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+/** A straight, thin arrow pointing forward in LTR (flip it with rtl:-scale-x-100). */
+export function LineArrowIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...stroke} strokeWidth={1.5} strokeLinecap="square" strokeLinejoin="miter" className={className} aria-hidden>
+      <path d="M3 12h17M14 6l6 6-6 6" />
+    </svg>
+  );
+}
+
+export function CheckIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...stroke} strokeWidth={2.2} strokeLinecap="square" strokeLinejoin="miter" className={className} aria-hidden>
+      <path d="M4.5 12.5 9.5 17.5 19.5 6.5" />
+    </svg>
+  );
+}

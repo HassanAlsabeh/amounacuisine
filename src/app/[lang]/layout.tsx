@@ -1,15 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Lalezar, Readex_Pro } from "next/font/google";
+import { Manrope, Syne, Tajawal } from "next/font/google";
 import { getSettings } from "@/lib/catalog";
 import { DEFAULT_LANG, dirOf, isLang, settingsText } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import "../globals.css";
 
-/* Headings: Lalezar's chunky, friendly strokes in both scripts. Body: Readex Pro, Arabic and Latin. */
-const lalezar = Lalezar({ variable: "--font-lalezar", subsets: ["arabic", "latin"], weight: "400" });
-const readex = Readex_Pro({ variable: "--font-readex", subsets: ["arabic", "latin"], weight: ["300", "400", "500", "600", "700"] });
+/*
+ * Grotesks only: Syne for Latin headings and the big numerals, Manrope for Latin text, Tajawal for all Arabic.
+ * Syne stops at 700 on purpose: its 800 turns too wide, so `font-extrabold` sets Syne at 700 and Arabic at Tajawal 800.
+ */
+const syne = Syne({ variable: "--font-syne", subsets: ["latin"], weight: ["500", "600", "700"] });
+const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
+const tajawal = Tajawal({ variable: "--font-tajawal", subsets: ["arabic", "latin"], weight: ["400", "500", "700", "800", "900"] });
 
-const fontVars = [lalezar, readex].map((f) => f.variable).join(" ");
+const fontVars = [syne, manrope, tajawal].map((f) => f.variable).join(" ");
 
 type Params = Promise<{ lang: string }>;
 
@@ -45,7 +49,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 export const viewport: Viewport = {
-  themeColor: "#e6e9f6",
+  themeColor: "#13100e",
 };
 
 export default async function RootLayout({ children, params }: Readonly<{ children: React.ReactNode; params: Params }>) {

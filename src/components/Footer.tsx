@@ -1,78 +1,89 @@
+"use client";
+
 import Image from "next/image";
-import { categoryName, dictionaries, settingsText } from "@/lib/i18n";
+import { categoryName, settingsText } from "@/lib/i18n";
 import { whatsappUrl } from "@/lib/order";
-import type { Category, Lang, Settings } from "@/lib/types";
-import { ChefHat } from "./Kitchenware";
+import type { Category, Settings } from "@/lib/types";
+import { pad } from "@/lib/ui";
+import { useI18n } from "./I18nProvider";
 import { socialLinks } from "./SocialLinks";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 
-/** The footer wears the chef's hat: its top edge is the hat's puffed scallop. */
-export function Footer({ settings, categories, lang }: { settings: Settings; categories: Category[]; lang: Lang }) {
-  const t = dictionaries[lang];
+const EMAIL = "amounacuisine95@gmail.com";
+
+/** Contact, the menu index, and the brand name set as wide as the screen, like end credits. */
+export function Footer({ settings, categories }: { settings: Settings; categories: Category[] }) {
+  const { lang, t } = useI18n();
   const s = settingsText(settings, lang);
   const links = socialLinks(settings, t);
 
   return (
-    <footer id="contact" className="bg-lav">
-      <div className="scallop-top bg-ink pt-14 pb-10 text-cream">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="relative block size-16 overflow-hidden rounded-full border-2 border-cream bg-white">
-                <Image src={settings.logo} alt="" fill sizes="64px" className="scale-[1.35] object-cover object-[50%_42%]" />
-              </span>
-              <div>
-                <p className="font-display text-3xl leading-none" dir="ltr">{settings.brandLatin}</p>
-                <p className="mt-1 text-sm text-cream/70">{s.tagline}</p>
+    <footer id="contact" className="overflow-hidden border-t border-line bg-night-2">
+      <div className="mx-auto grid max-w-[76rem] gap-12 px-4 pt-16 pb-10 sm:px-6 md:grid-cols-[1.3fr_1fr_1fr] md:pt-20">
+        <div>
+          <p className="font-display font-bold text-saffron">03</p>
+          <div className="mt-4 flex items-center gap-4">
+            <span className="relative block size-16 shrink-0 overflow-hidden rounded-full bg-lav">
+              <Image src={settings.logo} alt="" fill sizes="64px" className="scale-[1.3] object-cover object-[50%_42%]" />
+            </span>
+            <div>
+              <p className="font-display text-2xl font-extrabold" dir="ltr">{settings.brandLatin}</p>
+              <p className="text-sm text-bone-2">{s.tagline}</p>
+            </div>
+          </div>
+          <p className="mt-6 max-w-sm text-sm leading-relaxed text-bone-3">{s.noCallsNotice}</p>
+        </div>
+
+        <div>
+          <h2 className="border-b border-line pb-3 text-xs font-bold text-bone-3">{t.navContact}</h2>
+          <a href={whatsappUrl(settings.whatsappNumber, "")} target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-3 border-b border-line py-4">
+            <span className="flex items-center gap-2.5 text-sm text-bone-2 group-hover:text-bone">
+              <WhatsAppIcon className="size-4 text-saffron" />
+              {t.whatsapp}
+            </span>
+            <span className="font-display font-bold tabular-nums" dir="ltr">+961 {settings.whatsappDisplay}</span>
+          </a>
+          <a href={`mailto:${EMAIL}`} className="group flex items-center justify-between gap-3 border-b border-line py-4">
+            <span className="text-sm text-bone-2 group-hover:text-bone">{t.email}</span>
+            <span className="truncate text-sm font-semibold" dir="ltr">{EMAIL}</span>
+          </a>
+          {links.length > 0 && (
+            <div className="flex items-center justify-between gap-3 border-b border-line py-3">
+              <span className="text-sm text-bone-2">{t.followUs}</span>
+              <div className="flex">
+                {links.map(({ key, href, label, Icon }) => (
+                  <a key={key} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="-ms-px grid size-10 place-items-center border border-line-strong transition-colors hover:bg-bone hover:text-night">
+                    <Icon className="size-[1.1rem]" />
+                  </a>
+                ))}
               </div>
             </div>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-cream/70">{s.noCallsNotice}</p>
-            <ChefHat className="mt-6 w-20 text-cream/30" />
-          </div>
-
-          <div>
-            <h2 className="font-display text-xl text-butter">{t.footerSections}</h2>
-            <ul className="mt-3 space-y-2 text-sm">
-              {categories.map((c) => (
-                <li key={c.id}>
-                  <a href="#menu" className="text-cream/80 hover:text-cream">{c.emoji} {categoryName(c, lang)}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h2 className="font-display text-xl text-butter">{t.navContact}</h2>
-            <a
-              href={whatsappUrl(settings.whatsappNumber, "")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center gap-2 rounded-md border-2 border-cream px-3 py-2 text-sm font-bold hover:bg-cream hover:text-ink"
-            >
-              <WhatsAppIcon className="size-4" />
-              <span dir="ltr">+961 {settings.whatsappDisplay}</span>
-            </a>
-            <a href="mailto:amounacuisine95@gmail.com" className="mt-3 block text-sm text-cream/80 hover:text-cream" dir="ltr">
-              amounacuisine95@gmail.com
-            </a>
-            {links.length > 0 && (
-              <>
-                <p className="mt-5 text-sm text-cream/60">{t.followUs}</p>
-                <div className="mt-2 flex gap-2">
-                  {links.map(({ key, href, label, Icon }) => (
-                    <a key={key} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid size-10 place-items-center rounded-md border-2 border-cream hover:bg-cream hover:text-ink">
-                      <Icon className="size-5" />
-                    </a>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
+          )}
         </div>
-        <p className="mx-auto mt-10 max-w-6xl border-t border-cream/15 px-4 pt-5 text-xs text-cream/50">
-          © {new Date().getFullYear()} {settings.brandLatin} · {t.footerNote}
-        </p>
+
+        <div>
+          <h2 className="border-b border-line pb-3 text-xs font-bold text-bone-3">{t.footerSections}</h2>
+          <ul>
+            {categories.map((c, i) => (
+              <li key={c.id}>
+                <a href="#menu" className="group flex items-baseline gap-3 border-b border-line py-3 text-sm text-bone-2 hover:text-bone">
+                  <span className="font-display text-xs font-bold text-bone-3 group-hover:text-saffron">{pad(i + 1)}</span>
+                  {categoryName(c, lang)}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
+
+      {/* end credits */}
+      <p aria-hidden className="mx-auto max-w-[76rem] px-4 font-display text-[19vw] leading-[0.78] font-extrabold tracking-[-0.06em] whitespace-nowrap text-night-3 select-none sm:px-6 xl:text-[14.5rem]" dir="ltr">
+        {settings.brandLatin.split(" ")[0]}
+        <span className="text-saffron">.</span>
+      </p>
+      <p className="mx-auto max-w-[76rem] border-t border-line px-4 py-5 text-xs text-bone-3 sm:px-6">
+        © {new Date().getFullYear()} {settings.brandLatin} · {t.footerNote}
+      </p>
     </footer>
   );
 }
