@@ -1,15 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Lalezar, Readex_Pro } from "next/font/google";
+import { Alexandria, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { getSettings } from "@/lib/catalog";
 import { DEFAULT_LANG, dirOf, isLang, settingsText } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import "../globals.css";
 
-/* Headings: Lalezar's chunky, friendly strokes in both scripts. Body: Readex Pro, Arabic and Latin. */
-const lalezar = Lalezar({ variable: "--font-lalezar", subsets: ["arabic", "latin"], weight: "400" });
-const readex = Readex_Pro({ variable: "--font-readex", subsets: ["arabic", "latin"], weight: ["300", "400", "500", "600", "700"] });
+/* Headings: Alexandria's geometric strokes in both scripts. Body: IBM Plex Sans Arabic, calm and legible at small sizes. */
+const alexandria = Alexandria({ variable: "--font-alexandria", subsets: ["arabic", "latin"], weight: "variable" });
+const plex = IBM_Plex_Sans_Arabic({ variable: "--font-plex", subsets: ["arabic", "latin"], weight: ["400", "500", "600", "700"] });
 
-const fontVars = [lalezar, readex].map((f) => f.variable).join(" ");
+const fontVars = [alexandria, plex].map((f) => f.variable).join(" ");
 
 type Params = Promise<{ lang: string }>;
 
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 export const viewport: Viewport = {
-  themeColor: "#e6e9f6",
+  themeColor: "#f1eee6",
 };
 
 export default async function RootLayout({ children, params }: Readonly<{ children: React.ReactNode; params: Params }>) {
