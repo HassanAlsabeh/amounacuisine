@@ -1,8 +1,8 @@
 /**
- * A kibbeh hops in an arc from `from` to the tray button (the element marked
- * [data-order-target]), turning as it flies, then the tray gives a little bump.
+ * A tiny copy of the box (brand strip over the dish photo) hops in an arc from `from` to the
+ * checkout button (the element marked [data-order-target]), which then gives a scanner "beep".
  */
-export function flyToTray(from: Element | null) {
+export function flyToCheckout(from: Element | null, photo: string | null) {
   if (!from || typeof window === "undefined") return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const target = document.querySelector("[data-order-target]");
@@ -15,34 +15,33 @@ export function flyToTray(from: Element | null) {
   const dx = b.left + b.width / 2 - x0;
   const dy = b.top + b.height / 2 - y0;
 
-  const bite = document.createElement("div");
-  bite.innerHTML = KIBBEH_SVG;
-  Object.assign(bite.style, {
+  const box = document.createElement("div");
+  Object.assign(box.style, {
     position: "fixed",
-    left: `${x0 - 14}px`,
-    top: `${y0 - 10}px`,
-    width: "28px",
-    height: "20px",
+    left: `${x0 - 16}px`,
+    top: `${y0 - 20}px`,
+    width: "32px",
+    height: "40px",
     zIndex: "80",
     pointerEvents: "none",
+    background: `linear-gradient(#e0182f 0 9px, transparent 9px), ${photo ? `center / cover url("${photo}")` : "#dcecf9"}`,
+    border: "2px solid #fff",
+    boxShadow: "0 6px 14px -4px rgba(10,37,64,.6)",
   });
-  document.body.appendChild(bite);
+  document.body.appendChild(box);
 
-  const lift = Math.min(-90, dy - 140);
-  bite
+  const lift = Math.min(-80, dy - 120);
+  box
     .animate(
       [
         { transform: "translate(0, 0) rotate(0deg) scale(1)" },
-        { transform: `translate(${dx * 0.4}px, ${lift}px) rotate(-160deg) scale(1.3)`, offset: 0.45 },
-        { transform: `translate(${dx}px, ${dy}px) rotate(-340deg) scale(0.5)` },
+        { transform: `translate(${dx * 0.35}px, ${lift}px) rotate(-18deg) scale(1.25)`, offset: 0.45 },
+        { transform: `translate(${dx}px, ${dy}px) rotate(12deg) scale(0.4)` },
       ],
-      { duration: 780, easing: "cubic-bezier(0.45, 0, 0.3, 1)" },
+      { duration: 720, easing: "cubic-bezier(0.45, 0, 0.3, 1)" },
     )
     .finished.then(() => {
-      bite.remove();
-      target.animate([{ transform: "rotate(0)" }, { transform: "rotate(-10deg) scale(1.15)" }, { transform: "rotate(6deg)" }, { transform: "rotate(0)" }], { duration: 420 });
+      box.remove();
+      target.dispatchEvent(new CustomEvent("scanned"));
     });
 }
-
-const KIBBEH_SVG =
-  '<svg viewBox="0 0 28 20" width="28" height="20"><path d="M1.5 10C5 3 10 1.5 14 1.5S23 3 26.5 10C23 17 18 18.5 14 18.5S5 17 1.5 10Z" fill="#a8622f" stroke="#1d1b2c" stroke-width="1.6"/><path d="M6 9c3-2 6-3 8-3m-6 7c3-1 7-1.5 10-1" stroke="#7a4219" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>';
