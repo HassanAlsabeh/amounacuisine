@@ -1,44 +1,31 @@
 "use client";
 
-import { whatsappUrl } from "@/lib/order";
-import type { Settings } from "@/lib/types";
 import { useI18n } from "./I18nProvider";
-import { WhatsAppIcon } from "./WhatsAppIcon";
 
-/** Three steps, as stickers slapped on the lavender wall. */
-export function HowTo({ settings }: { settings: Settings }) {
+/** Ordering in three panels, printed one per ink like the back of an old tin. */
+export function HowTo() {
   const { t } = useI18n();
   const steps = [
-    { title: t.step1, text: t.step1Text, icon: "📋", tilt: "-rotate-2", bg: "bg-white" },
-    { title: t.step2, text: t.step2Text, icon: "💬", tilt: "rotate-1", bg: "bg-butter-soft" },
-    { title: t.step3, text: t.step3Text, icon: "🍳", tilt: "-rotate-1", bg: "bg-white" },
+    [t.step1, t.step1Text, "bg-tomato text-paper-3", "-rotate-1"],
+    [t.step2, t.step2Text, "bg-mustard text-brown", "rotate-1 md:translate-y-5"],
+    [t.step3, t.step3Text, "bg-teal text-paper-3", "-rotate-[0.6deg]"],
   ];
 
   return (
-    <section id="how" className="bg-lav py-14 sm:py-20">
+    <section id="how" className="border-t-[3px] border-brown bg-paper-2 py-14 sm:py-20">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="text-center font-display text-4xl leading-tight sm:text-5xl">{t.howTitle}</h2>
-        <ol className="mt-10 grid gap-6 sm:grid-cols-3 sm:gap-5">
-          {steps.map((s, i) => (
-            <li key={s.title} className={`relative rounded-md border-2 border-ink p-5 pt-7 shadow-sticker ${s.bg} ${s.tilt}`}>
-              <span className="absolute -top-5 start-4 grid size-11 place-items-center rounded-full border-2 border-ink bg-tomato font-display text-2xl text-white">{i + 1}</span>
-              <span className="absolute end-4 top-3 text-3xl" aria-hidden>{s.icon}</span>
-              <h3 className="font-display text-2xl">{s.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-2">{s.text}</p>
+        <h2 className="riso text-center font-display text-[2.4rem] leading-tight sm:text-6xl">{t.howTitle}</h2>
+        <ol className="mt-10 grid gap-5 md:grid-cols-3 md:gap-7">
+          {steps.map(([title, text, ink, tilt], i) => (
+            <li key={title} className={`relative border-[3px] border-brown p-5 pt-4 ${ink} ${tilt}`}>
+              <span aria-hidden className="block font-display text-6xl leading-none [text-shadow:3px_3px_0_var(--color-brown)]" dir="ltr">
+                {i + 1}
+              </span>
+              <h3 className="mt-3 font-display text-2xl leading-tight">{title}</h3>
+              <p className="mt-1.5 leading-relaxed font-medium opacity-90">{text}</p>
             </li>
           ))}
         </ol>
-        <p className="mt-10 text-center">
-          <a
-            href={whatsappUrl(settings.whatsappNumber, "")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="press inline-flex h-12 items-center gap-2 rounded-md border-2 border-ink bg-whatsapp px-5 font-bold text-white shadow-sticker"
-          >
-            <WhatsAppIcon className="size-5" />
-            {t.contact} · <span dir="ltr">{settings.whatsappDisplay}</span>
-          </a>
-        </p>
       </div>
     </section>
   );

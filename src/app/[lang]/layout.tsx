@@ -1,15 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Lalezar, Readex_Pro } from "next/font/google";
+import { Baloo_Bhaijaan_2, Bungee, Rakkas, Shrikhand } from "next/font/google";
 import { getSettings } from "@/lib/catalog";
 import { DEFAULT_LANG, dirOf, isLang, settingsText } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import "../globals.css";
 
-/* Headings: Lalezar's chunky, friendly strokes in both scripts. Body: Readex Pro, Arabic and Latin. */
-const lalezar = Lalezar({ variable: "--font-lalezar", subsets: ["arabic", "latin"], weight: "400" });
-const readex = Readex_Pro({ variable: "--font-readex", subsets: ["arabic", "latin"], weight: ["300", "400", "500", "600", "700"] });
+/*
+ * Poster type. Display: Shrikhand's '70s swash for Latin, Rakkas' fat poster naskh for Arabic.
+ * Both Latin faces skip next/font's metric fallback, so Arabic in the same line falls through to Rakkas / Baloo.
+ * Sign: Bungee, the cinema-marquee letters for prices and ticket numbers. Body: Baloo Bhaijaan 2, round in both scripts.
+ */
+const shrikhand = Shrikhand({ variable: "--font-shrikhand", subsets: ["latin"], weight: "400", adjustFontFallback: false });
+const rakkas = Rakkas({ variable: "--font-rakkas", subsets: ["arabic", "latin"], weight: "400" });
+const bungee = Bungee({ variable: "--font-bungee", subsets: ["latin"], weight: "400", adjustFontFallback: false });
+const baloo = Baloo_Bhaijaan_2({ variable: "--font-baloo", subsets: ["arabic", "latin"], weight: ["400", "500", "600", "700", "800"] });
 
-const fontVars = [lalezar, readex].map((f) => f.variable).join(" ");
+const fontVars = [shrikhand, rakkas, bungee, baloo].map((f) => f.variable).join(" ");
 
 type Params = Promise<{ lang: string }>;
 
@@ -45,7 +51,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 export const viewport: Viewport = {
-  themeColor: "#e6e9f6",
+  themeColor: "#df4a2b",
 };
 
 export default async function RootLayout({ children, params }: Readonly<{ children: React.ReactNode; params: Params }>) {
