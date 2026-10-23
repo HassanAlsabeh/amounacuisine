@@ -1,0 +1,19 @@
+{
+  "settings": {
+    "siteName": "Amouna Cuisine",
+    "brandName": "Amouna Cuisine",
+    "brandSubtitle": "Em Milana's kitchen",
+    "tagline": "Home food, made by hand",
+    "welcome": "From our kitchen to yours: kibbeh, rkakat, vine leaves and pastries made by hand and frozen, ready to fry, bake or cook, plus home dishes ready to eat. You just put them on the stove; we did the hard part.",
+    "noCallsNotice": "Order on WhatsApp and we'll confirm price and pick-up time",
+    "deliveryNotice": "Delivery depends on area",
+    "travelPackaging": { "label": "Travel packaging", "hint": "" }
+  },
+  "categories": {
+    "fry": "Ready to fry",
+    "bake": "Ready to bake",
+    "cook": "Ready to cook",
+    "eat": "Ready to eat",
+    "offers": "Deals"
+  }
+}

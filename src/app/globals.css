@@ -1,0 +1,214 @@
+@import "tailwindcss";
+
+/* "Em Milana's stove": the logo's lavender circle and black chef-hat line, laid on a gingham
+   kitchen cloth. Everything is a cut-out sticker with a hard ink edge and an offset shadow; the menu
+   is filtered with stove knobs, dishes flip like recipe cards, and the order fills a baking tray. */
+@theme {
+  --color-cream: #fffbf3;
+  --color-cream-2: #f7f0e2;
+  --color-lav: #c6cce6;
+  --color-lav-2: #e6e9f6;
+  --color-lav-deep: #5b5fa8;
+  --color-ink: #1d1b2c;
+  --color-ink-2: #4a4860;
+  --color-ink-3: #8b89a0;
+  --color-tomato: #e2553f;
+  --color-tomato-deep: #b83a27;
+  --color-butter: #f5cf62;
+  --color-butter-soft: #fbecb8;
+  --color-steel: #2a2840;
+  --color-whatsapp: #1f9d50;
+  --color-whatsapp-dark: #167f40;
+
+  --shadow-sticker: 4px 4px 0 var(--color-ink);
+  --shadow-sticker-sm: 2px 2px 0 var(--color-ink);
+  --shadow-sticker-lg: 7px 7px 0 var(--color-ink);
+
+  --animate-wobble: wobble 5s ease-in-out infinite;
+  --animate-bump: bump 0.45s ease-out;
+  --animate-flicker: flicker 1.1s ease-in-out infinite;
+}
+
+@theme inline {
+  --font-sans: var(--font-readex), system-ui, sans-serif;
+  --font-display: var(--font-lalezar), var(--font-readex), sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+}
+
+::selection {
+  background: var(--color-butter);
+  color: var(--color-ink);
+}
+
+/* the kitchen cloth: lavender gingham */
+.gingham {
+  background-color: var(--color-lav-2);
+  background-image:
+    linear-gradient(90deg, rgba(91, 95, 168, 0.16) 50%, transparent 50%),
+    linear-gradient(0deg, rgba(91, 95, 168, 0.16) 50%, transparent 50%);
+  background-size: 34px 34px;
+}
+
+/* baking paper: a faint grid on cream */
+.parchment {
+  background-color: var(--color-cream);
+  background-image:
+    linear-gradient(rgba(29, 27, 44, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 27, 44, 0.05) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* the puffed top of a chef's hat, as a scalloped edge along the top of a block */
+.scallop-top {
+  -webkit-mask:
+    radial-gradient(22px at 50% 22px, #000 98%, transparent) 50% 0 / 44px 22px repeat-x,
+    linear-gradient(#000, #000) 0 21px / 100% calc(100% - 21px) no-repeat;
+  mask:
+    radial-gradient(22px at 50% 22px, #000 98%, transparent) 50% 0 / 44px 22px repeat-x,
+    linear-gradient(#000, #000) 0 21px / 100% calc(100% - 21px) no-repeat;
+}
+
+/* a pinked (zig-zag) edge, like a price label cut with kitchen scissors */
+.pinked {
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 12px 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 12px 100%;
+}
+
+/* a pressable sticker: sinks into its shadow when pressed */
+.press {
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+.press:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--color-ink);
+}
+
+/* recipe cards turn over */
+.flip {
+  perspective: 1200px;
+}
+.flip-inner {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.flip.is-flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+/* a stove knob's ridged grip */
+.knob-grip {
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.35), transparent 45%),
+    repeating-conic-gradient(from 0deg, #3a3854 0 6deg, #24223a 6deg 12deg);
+}
+
+/* the tray rises from the bottom of the screen */
+.tray-sheet {
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.tray-sheet.is-open {
+  transform: none;
+}
+.tray-scrim {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.tray-scrim.is-open {
+  opacity: 1;
+}
+
+/* dishes slide onto the menu when the knob turns */
+.deal-in {
+  animation: dealIn 0.45s cubic-bezier(0.2, 0.9, 0.25, 1.1) both;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes dealIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) rotate(-2deg) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes wobble {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(4deg) translateY(-4px);
+  }
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.25) rotate(-8deg);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    transform: scaleY(1);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scaleY(1.18);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .flip-inner,
+  .tray-sheet,
+  .tray-scrim {
+    transition: none;
+  }
+  .deal-in,
+  .animate-wobble,
+  .animate-flicker {
+    animation: none;
+  }
+}

@@ -1,0 +1,7 @@
+[
+  { "id": "fry", "name": "جاهز للقلي", "emoji": "🔥", "color": "#E2553F" },
+  { "id": "bake", "name": "جاهز للخبز", "emoji": "🥧", "color": "#D9962B" },
+  { "id": "cook", "name": "جاهز للطبخ", "emoji": "🍲", "color": "#4E8A5B" },
+  { "id": "eat", "name": "جاهز للأكل", "emoji": "🍽️", "color": "#6E72B8" },
+  { "id": "offers", "name": "العروض", "emoji": "🏷️", "color": "#1D1B2C" }
+]

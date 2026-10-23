@@ -1,0 +1,24 @@
+{
+  "siteName": "أمونة كوزين",
+  "brandName": "أمونة كوزين",
+  "brandLatin": "Amouna Cuisine",
+  "brandSubtitle": "مطبخ أم ميلانا",
+  "tagline": "أكل بيتي، محضّر بالإيد",
+  "logo": "/logo.png",
+  "welcome": "من مطبخنا لمطبخكن: كبة، رقاقات، ورق عنب ومعجنات محضّرة بالإيد ومجلّدة، جاهزة للقلي أو للخبز أو للطبخ، وطبخات جاهزة للأكل. انتو بس حطّوها عالنار، والتعب علينا.",
+  "whatsappNumber": "96170548830",
+  "whatsappDisplay": "70 54 88 30",
+  "currency": "$",
+  "noCallsNotice": "الطلب عالواتساب، ومنأكّدلكن السعر ووقت التسليم",
+  "deliveryNotice": "توصيل حسب المنطقة",
+  "freeDeliveryProductIds": [],
+  "travelPackaging": {
+    "enabled": false,
+    "pricePerUnit": 0,
+    "label": "تغليف للسفر",
+    "hint": ""
+  },
+  "instagramUrl": "https://www.instagram.com/amouna_cuisine/",
+  "tiktokUrl": "",
+  "facebookUrl": ""
+}
