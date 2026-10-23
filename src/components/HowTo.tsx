@@ -1,45 +1,31 @@
-"use client";
+import { dictionaries } from "@/lib/i18n";
+import type { Lang } from "@/lib/types";
+import { ArrowDoodle } from "./Chalk";
 
-import { whatsappUrl } from "@/lib/order";
-import type { Settings } from "@/lib/types";
-import { useI18n } from "./I18nProvider";
-import { WhatsAppIcon } from "./WhatsAppIcon";
-
-/** Three steps, as stickers slapped on the lavender wall. */
-export function HowTo({ settings }: { settings: Settings }) {
-  const { t } = useI18n();
+/** Three steps chalked across the board, with arrows from one to the next. */
+export function HowTo({ lang }: { lang: Lang }) {
+  const t = dictionaries[lang];
   const steps = [
-    { title: t.step1, text: t.step1Text, icon: "📋", tilt: "-rotate-2", bg: "bg-white" },
-    { title: t.step2, text: t.step2Text, icon: "💬", tilt: "rotate-1", bg: "bg-butter-soft" },
-    { title: t.step3, text: t.step3Text, icon: "🍳", tilt: "-rotate-1", bg: "bg-white" },
+    [t.step1, t.step1Text, "text-chalk-yellow"],
+    [t.step2, t.step2Text, "text-chalk-pink"],
+    [t.step3, t.step3Text, "text-chalk-lav"],
   ];
 
   return (
-    <section id="how" className="bg-lav py-14 sm:py-20">
-      <div className="mx-auto max-w-6xl px-4">
-        <h2 className="text-center font-display text-4xl leading-tight sm:text-5xl">{t.howTitle}</h2>
-        <ol className="mt-10 grid gap-6 sm:grid-cols-3 sm:gap-5">
-          {steps.map((s, i) => (
-            <li key={s.title} className={`relative rounded-md border-2 border-ink p-5 pt-7 shadow-sticker ${s.bg} ${s.tilt}`}>
-              <span className="absolute -top-5 start-4 grid size-11 place-items-center rounded-full border-2 border-ink bg-tomato font-display text-2xl text-white">{i + 1}</span>
-              <span className="absolute end-4 top-3 text-3xl" aria-hidden>{s.icon}</span>
-              <h3 className="font-display text-2xl">{s.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-2">{s.text}</p>
-            </li>
-          ))}
-        </ol>
-        <p className="mt-10 text-center">
-          <a
-            href={whatsappUrl(settings.whatsappNumber, "")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="press inline-flex h-12 items-center gap-2 rounded-md border-2 border-ink bg-whatsapp px-5 font-bold text-white shadow-sticker"
-          >
-            <WhatsAppIcon className="size-5" />
-            {t.contact} · <span dir="ltr">{settings.whatsappDisplay}</span>
-          </a>
-        </p>
-      </div>
+    <section id="how" className="mx-auto max-w-7xl border-t-2 border-dashed border-chalk/15 px-5 py-12 md:px-10 md:py-16">
+      <h2 className="chalk chalky font-chalk text-[calc(2.2rem*var(--cs))] leading-tight font-semibold">{t.howTitle}</h2>
+      <ol className="mt-8 grid gap-8 md:grid-cols-3 md:gap-6">
+        {steps.map(([title, text, ink], i) => (
+          <li key={title} className="relative flex gap-4">
+            <span className={`chalk chalk-box grid size-12 shrink-0 place-items-center font-chalk text-[calc(1.6rem*var(--cs))] font-bold ${ink}`}>{i + 1}</span>
+            <div className="min-w-0">
+              <h3 className={`chalk font-chalk text-[calc(1.35rem*var(--cs))] leading-tight font-semibold ${ink}`}>{title}</h3>
+              <p className="mt-1 text-sm leading-relaxed text-chalk/65">{text}</p>
+            </div>
+            {i < steps.length - 1 && <ArrowDoodle className="chalky absolute -end-5 top-2 hidden h-6 w-10 text-chalk/40 md:block rtl:-scale-x-100" />}
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }

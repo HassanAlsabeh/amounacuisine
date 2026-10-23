@@ -1,15 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Lalezar, Readex_Pro } from "next/font/google";
+import { Caveat, Kalam, Mada, Marhey } from "next/font/google";
 import { getSettings } from "@/lib/catalog";
 import { DEFAULT_LANG, dirOf, isLang, settingsText } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import "../globals.css";
 
-/* Headings: Lalezar's chunky, friendly strokes in both scripts. Body: Readex Pro, Arabic and Latin. */
-const lalezar = Lalezar({ variable: "--font-lalezar", subsets: ["arabic", "latin"], weight: "400" });
-const readex = Readex_Pro({ variable: "--font-readex", subsets: ["arabic", "latin"], weight: ["300", "400", "500", "600", "700"] });
+/*
+ * Chalk on the board: Caveat for Latin, Marhey's rounded hand for Arabic. The waiter's pen on the
+ * order pad: Kalam (Arabic falls back to Marhey). Body text: Mada, clean in both scripts.
+ * The Latin-only fonts get no metric-matched fallback face: it would cover Arabic letters
+ * with Arial before Marhey ever got them.
+ */
+const caveat = Caveat({ variable: "--font-caveat", subsets: ["latin"], weight: ["400", "600", "700"], adjustFontFallback: false });
+const marhey = Marhey({ variable: "--font-marhey", subsets: ["arabic", "latin"], weight: ["400", "500", "600", "700"] });
+const kalam = Kalam({ variable: "--font-kalam", subsets: ["latin"], weight: ["400", "700"], adjustFontFallback: false });
+const mada = Mada({ variable: "--font-mada", subsets: ["arabic", "latin"], weight: ["300", "400", "500", "600", "700"] });
 
-const fontVars = [lalezar, readex].map((f) => f.variable).join(" ");
+const fontVars = [caveat, marhey, kalam, mada].map((f) => f.variable).join(" ");
 
 type Params = Promise<{ lang: string }>;
 
@@ -45,7 +52,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 export const viewport: Viewport = {
-  themeColor: "#e6e9f6",
+  themeColor: "#6e4222",
 };
 
 export default async function RootLayout({ children, params }: Readonly<{ children: React.ReactNode; params: Params }>) {
@@ -55,7 +62,7 @@ export default async function RootLayout({ children, params }: Readonly<{ childr
 
   return (
     <html lang={lang} dir={dirOf(lang)}>
-      <body className={`${fontVars} font-sans antialiased`}>
+      <body className={`${fontVars} wood font-sans antialiased`}>
         {children}
       </body>
     </html>

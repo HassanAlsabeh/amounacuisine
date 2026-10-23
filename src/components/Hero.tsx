@@ -2,80 +2,84 @@ import Image from "next/image";
 import { dictionaries, settingsText } from "@/lib/i18n";
 import { whatsappUrl } from "@/lib/order";
 import type { Lang, Settings } from "@/lib/types";
-import { Fork, Knife } from "./Kitchenware";
+import { ArrowDoodle, FlameDoodle, HatDoodle, KibbehDoodle, PotDoodle, Scribble } from "./Chalk";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 
-/** The logo's mother and daughter served on a plate, laid on the gingham kitchen cloth. */
+/** The top of the board: the kitchen's name chalked big, Em Milana and Milana in a chalk ring, doodles around. */
 export function Hero({ settings, lang }: { settings: Settings; lang: Lang }) {
   const t = dictionaries[lang];
   const s = settingsText(settings, lang);
 
   const stats = [
-    [t.statFollowers, t.statFollowersLabel, "bg-white"],
-    [t.statHands, t.statHandsLabel, "bg-butter-soft"],
-    [t.statFrozen, t.statFrozenLabel, "bg-lav"],
+    [t.statFollowers, t.statFollowersLabel],
+    [t.statHands, t.statHandsLabel],
+    [t.statFrozen, t.statFrozenLabel],
   ];
 
   return (
-    <section className="gingham relative overflow-hidden border-b-2 border-ink">
-      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-8 pb-14 md:grid-cols-[1.05fr_1fr] md:gap-6 md:pt-14 md:pb-20">
-        <div className="relative z-10 order-2 md:order-1">
-          <p className="inline-block -rotate-2 rounded-sm border-2 border-ink bg-butter px-3 py-1 text-sm font-bold shadow-sticker-sm">{t.heroKicker}</p>
-          <h1 className="mt-5 font-display text-[3.4rem] leading-[1.05] sm:text-7xl lg:text-[5.4rem]">
+    <section className="relative overflow-hidden">
+      <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 pt-8 pb-12 md:grid-cols-[1.1fr_1fr] md:gap-4 md:px-10 md:pt-14 md:pb-16">
+        <div className="order-2 md:order-1">
+          <p className="chalk font-chalk text-[calc(1.2rem*var(--cs))] text-chalk-pink">{t.heroKicker}</p>
+          <h1 className="chalk chalky mt-3 font-chalk text-[calc(3.1rem*var(--cs))] leading-[1.1] font-semibold sm:text-[calc(4rem*var(--cs))] lg:text-[calc(4.8rem*var(--cs))]">
             {t.heroTitle}
-            <span className="relative block text-tomato">
+            <span className="relative block w-fit text-chalk-yellow">
               {t.heroTitleAccent}
-              <svg viewBox="0 0 300 18" className="absolute -bottom-2 start-0 h-3 w-[min(100%,18rem)] text-ink" preserveAspectRatio="none" aria-hidden>
-                <path d="M3 12c40-8 80-9 120-4s90 5 174-6" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
-              </svg>
+              <Scribble className="absolute -bottom-1 start-0 h-3 w-full text-chalk-yellow/80" />
             </span>
           </h1>
-          <p className="mt-6 max-w-xl text-[1.05rem] leading-8 text-ink-2">{s.welcome}</p>
+          <p className="mt-6 max-w-xl text-[1.02rem] leading-8 text-chalk/80">{s.welcome}</p>
 
-          <div className="mt-7 flex flex-wrap gap-3">
-            <a href="#menu" className="press inline-flex h-13 items-center rounded-md border-2 border-ink bg-ink px-6 text-base font-bold text-cream shadow-[4px_4px_0_var(--color-tomato)]">
+          <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <a href="#menu" className="chalk-box chalk inline-flex h-12 items-center gap-2 px-5 font-chalk text-[calc(1.3rem*var(--cs))] text-chalk-yellow transition-transform hover:-rotate-1">
               {t.browse}
+              <ArrowDoodle className="h-5 w-9 rotate-90" />
             </a>
             <a
               href={whatsappUrl(settings.whatsappNumber, "")}
               target="_blank"
               rel="noopener noreferrer"
-              className="press inline-flex h-13 items-center gap-2 rounded-md border-2 border-ink bg-whatsapp px-5 text-base font-bold text-white shadow-sticker"
+              className="inline-flex h-12 items-center gap-2 border-b-2 border-dashed border-chalk-mint/60 font-semibold text-chalk-mint hover:border-chalk-mint"
             >
               <WhatsAppIcon className="size-5" />
               {t.orderOnWhatsapp}
             </a>
           </div>
 
-          <dl className="mt-9 grid max-w-lg grid-cols-3 gap-2.5 sm:gap-4">
-            {stats.map(([value, label, bg], i) => (
-              <div key={label} className={`rounded-md border-2 border-ink px-2.5 py-3 shadow-sticker-sm sm:px-4 ${bg} ${i === 1 ? "rotate-1" : i === 2 ? "-rotate-1" : ""}`}>
+          {/* chalked notes, not cards */}
+          <dl className="mt-10 grid max-w-lg grid-cols-3 gap-3 border-t-2 border-dashed border-chalk/20 pt-5">
+            {stats.map(([value, label], i) => (
+              <div key={label} className={i ? "border-s-2 border-dashed border-chalk/20 ps-3" : ""}>
                 <dt className="sr-only">{label}</dt>
                 <dd>
-                  <span className="block font-display text-[1.3rem] leading-none whitespace-nowrap sm:text-3xl" dir="auto">{value}</span>
-                  <span className="mt-1.5 block text-[0.72rem] leading-snug text-ink-2 sm:text-xs">{label}</span>
+                  <span className="chalk block font-chalk text-[calc(1.55rem*var(--cs))] leading-none whitespace-nowrap text-chalk-lav" dir="auto">
+                    {value}
+                  </span>
+                  <span className="mt-1.5 block text-[0.75rem] leading-snug text-chalk/60">{label}</span>
                 </dd>
               </div>
             ))}
           </dl>
         </div>
 
-        <div className="relative order-1 mx-auto w-full max-w-[22rem] sm:max-w-[26rem] md:order-2 md:max-w-none">
-          <Fork className="absolute top-[22%] -start-1 h-[58%] text-ink sm:-start-4" />
-          <Knife className="absolute top-[22%] -end-1 h-[58%] text-ink sm:-end-4" />
-
-          <div className="relative mx-auto mt-[12%] aspect-square w-[78%]">
-            {/* the plate: a cream rim around the lavender portrait */}
-            <div className="absolute inset-0 rounded-full border-[3px] border-ink bg-cream shadow-sticker-lg" />
-            <div className="absolute inset-[7%] rounded-full border-2 border-dashed border-ink/25" />
-            <div className="absolute -inset-x-[1%] bottom-[2%] -top-[30%]">
-              <Image src="/portrait.png" alt={`${settings.brandLatin}: ${s.brandSubtitle}`} fill sizes="(min-width: 768px) 440px, 80vw" priority className="object-contain object-bottom" />
+        <div className="relative order-1 mx-auto w-full max-w-[17.5rem] sm:max-w-[24rem] md:order-2 md:max-w-[27rem]">
+          {/* a chalk ring around the portrait, drawn twice like a quick hand would */}
+          <div className="relative aspect-square">
+            <svg viewBox="0 0 200 200" className="chalky absolute -inset-[5%] text-chalk/85" fill="none" stroke="currentColor" strokeLinecap="round" aria-hidden>
+              <path d="M100 8c52 0 92 38 92 90s-40 94-94 94S8 152 8 100 48 9 104 8" strokeWidth="2.4" />
+              <path d="M90 12c50-4 96 34 98 86 2 50-38 88-90 90" strokeWidth="1.3" opacity=".6" />
+            </svg>
+            <div className="absolute inset-[3%] overflow-hidden rounded-full bg-chalk-lav">
+              <Image src="/portrait.png" alt={`${settings.brandLatin}: ${s.brandSubtitle}`} fill sizes="(min-width: 768px) 420px, 76vw" priority className="origin-bottom scale-[1.24] object-cover object-bottom" />
             </div>
+            <HatDoodle className="chalky absolute -top-[16%] left-1/2 w-[46%] -translate-x-1/2 text-chalk" />
           </div>
 
-          <span className="animate-wobble absolute top-[8%] start-0 rounded-sm border-2 border-ink bg-tomato px-2.5 py-1 text-sm font-bold text-white shadow-sticker-sm">🔥 {t.stickerFry}</span>
-          <span className="animate-wobble absolute end-0 top-[46%] rounded-sm border-2 border-ink bg-butter px-2.5 py-1 text-sm font-bold shadow-sticker-sm [animation-delay:-1.6s]">🥧 {t.stickerBake}</span>
-          <span className="animate-wobble absolute bottom-[2%] start-[6%] rounded-sm border-2 border-ink bg-white px-2.5 py-1 text-sm font-bold shadow-sticker-sm [animation-delay:-3.1s]">🍽️ {t.stickerEat}</span>
+          <KibbehDoodle className="chalky absolute -start-[8%] bottom-[4%] w-[28%] -rotate-12 text-chalk-yellow sm:-start-[20%]" />
+          <span className="chalk absolute -start-[2%] bottom-[-7%] -rotate-6 font-chalk text-[calc(1.15rem*var(--cs))] text-chalk-yellow sm:-start-[14%]">{t.doodleKibbeh}</span>
+          <PotDoodle className="chalky absolute -end-[14%] top-[2%] w-[30%] rotate-6 text-chalk-lav sm:-end-[20%]" />
+          <FlameDoodle className="chalky absolute -end-[6%] bottom-[2%] w-[13%] text-chalk-pink sm:-end-[10%]" />
+          <span className="chalk absolute -end-[8%] bottom-[-8%] rotate-3 font-chalk text-[calc(1rem*var(--cs))] whitespace-nowrap text-chalk-pink sm:-end-[14%]">{t.doodlePan}</span>
         </div>
       </div>
     </section>

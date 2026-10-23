@@ -2,69 +2,57 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import type { Settings } from "@/lib/types";
 import { settingsText } from "@/lib/i18n";
+import type { Settings } from "@/lib/types";
 import { useCart } from "./CartProvider";
 import { useI18n } from "./I18nProvider";
-import { TrayIcon } from "./Kitchenware";
+import { LangSwitch } from "./LangSwitch";
 
+/** The top rail of the board's wooden frame: the sign, the language, and (on phones) the order pad. */
 export function Header({ settings }: { settings: Settings }) {
   const { lang, t } = useI18n();
   const { totals, open } = useCart();
-  const [scrolled, setScrolled] = useState(false);
   const s = settingsText(settings, lang);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <header className={`sticky top-0 z-40 border-b-2 transition-colors ${scrolled ? "border-ink bg-cream/95 backdrop-blur" : "border-transparent bg-lav-2"}`}>
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:h-[72px]">
+    <header className="wood sticky top-0 z-40 shadow-[0_6px_10px_-4px_rgba(0,0,0,0.55)]">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-3 sm:px-5">
         <Link href={`/${lang}`} className="flex min-w-0 items-center gap-2.5">
-          <span className="relative block size-11 shrink-0 overflow-hidden rounded-full border-2 border-ink bg-white">
+          <span className="relative block size-11 shrink-0 overflow-hidden rounded-full border-2 border-chalk/80 bg-white shadow-[0_2px_0_rgba(0,0,0,0.35)]">
             <Image src={settings.logo} alt="" fill sizes="44px" className="scale-[1.35] object-cover object-[50%_42%]" priority />
           </span>
           <span className="min-w-0 leading-none">
-            <span className="block truncate font-display text-[1.35rem] sm:text-2xl" dir="ltr">
+            <span className="chalk block truncate font-chalk text-[1.45rem] leading-none font-bold sm:text-[1.7rem]" dir="ltr" lang="en">
               {settings.brandLatin}
             </span>
-            <span className="block truncate text-[0.7rem] font-medium text-ink-2">{s.brandSubtitle}</span>
+            <span className="mt-0.5 block truncate text-[0.72rem] text-chalk/70">{s.brandSubtitle}</span>
           </span>
         </Link>
 
-        <nav className="ms-auto hidden items-center gap-6 text-sm font-semibold md:flex">
-          <a href="#menu" className="hover:text-tomato">{t.navMenu}</a>
-          <a href="#how" className="hover:text-tomato">{t.navHow}</a>
-          <a href="#contact" className="hover:text-tomato">{t.navContact}</a>
+        <nav className="ms-auto hidden items-center gap-6 font-chalk text-[calc(1.15rem*var(--cs))] text-chalk/85 md:flex">
+          <a href="#menu" className="chalk hover:text-chalk-yellow">{t.navMenu}</a>
+          <a href="#how" className="chalk hover:text-chalk-yellow">{t.navHow}</a>
+          <a href="#contact" className="chalk hover:text-chalk-yellow">{t.navContact}</a>
         </nav>
 
-        <div className="ms-auto flex items-center gap-2 md:ms-4">
-          <Link
-            href={lang === "ar" ? "/en" : "/ar"}
-            aria-label={t.switchLangLabel}
-            className="press grid h-10 min-w-10 place-items-center rounded-md border-2 border-ink bg-white px-2 text-sm font-bold shadow-sticker-sm"
-          >
-            {lang === "ar" ? "EN" : "ع"}
-          </Link>
+        <div className="ms-auto flex shrink-0 items-center gap-2.5 md:ms-4">
+          <LangSwitch className="chalk-box chalk grid h-9 place-items-center px-2.5 font-chalk text-base text-chalk hover:text-chalk-yellow" />
+
+          {/* the waiter's pad, hanging on the frame (on wide screens it's pinned to the board instead) */}
           <button
             type="button"
             data-order-target
             onClick={(e) => open(e.currentTarget)}
-            aria-label={`${t.cart} (${totals.units})`}
-            className="press relative flex h-10 items-center gap-2 rounded-md border-2 border-ink bg-butter px-3 font-bold shadow-sticker-sm"
+            aria-label={`${t.padOpen} (${totals.units})`}
+            className="relative -rotate-3 overflow-hidden rounded-[3px] bg-paper text-pen shadow-[2px_3px_0_rgba(0,0,0,0.35)] lg:hidden"
           >
-            <TrayIcon className="h-5 w-7" />
-            <span className="hidden text-sm sm:inline">{t.cart}</span>
-            {totals.units > 0 && (
-              <span key={totals.units} className="animate-bump absolute -end-2.5 -top-2.5 grid size-6 place-items-center rounded-full border-2 border-ink bg-tomato text-xs font-bold text-white">
+            <span className="block h-2 bg-binding" />
+            <span className="flex h-9 items-center gap-1.5 px-2 font-pen text-[0.8rem] font-bold">
+              {t.padTab}
+              <span key={totals.units} className={`grid min-w-6 place-items-center rounded-full border-[1.5px] border-pen px-1 text-xs tabular-nums ${totals.units ? "animate-bump" : "opacity-50"}`}>
                 {totals.units}
               </span>
-            )}
+            </span>
           </button>
         </div>
       </div>

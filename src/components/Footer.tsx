@@ -1,77 +1,81 @@
 import Image from "next/image";
-import { categoryName, dictionaries, settingsText } from "@/lib/i18n";
+import { dictionaries, settingsText } from "@/lib/i18n";
 import { whatsappUrl } from "@/lib/order";
-import type { Category, Lang, Settings } from "@/lib/types";
-import { ChefHat } from "./Kitchenware";
+import type { Lang, Settings } from "@/lib/types";
+import { HatDoodle } from "./Chalk";
 import { socialLinks } from "./SocialLinks";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 
-/** The footer wears the chef's hat: its top edge is the hat's puffed scallop. */
-export function Footer({ settings, categories, lang }: { settings: Settings; categories: Category[]; lang: Lang }) {
+/** Sticks of chalk lying on the ledge, in the board's colours. */
+const STICKS = [
+  ["bg-chalk", "w-14 -rotate-3"],
+  ["bg-chalk-yellow", "w-10 rotate-2"],
+  ["bg-chalk-pink", "w-8 -rotate-6"],
+  ["bg-chalk-lav", "w-12 rotate-1"],
+];
+
+/** The bottom of the board: how to reach the kitchen, chalked, above the wooden ledge with its chalk and eraser. */
+export function Footer({ settings, lang }: { settings: Settings; lang: Lang }) {
   const t = dictionaries[lang];
   const s = settingsText(settings, lang);
   const links = socialLinks(settings, t);
 
   return (
-    <footer id="contact" className="bg-lav">
-      <div className="scallop-top bg-ink pt-14 pb-10 text-cream">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-[1.4fr_1fr_1fr]">
+    <footer id="contact">
+      <div className="mx-auto grid max-w-7xl gap-10 border-t-2 border-dashed border-chalk/15 px-5 pt-12 pb-10 md:grid-cols-[1.3fr_1fr] md:px-10">
+        <div className="flex items-start gap-4">
+          <span className="relative block size-16 shrink-0 overflow-hidden rounded-full border-2 border-chalk/80 bg-white">
+            <Image src={settings.logo} alt="" fill sizes="64px" className="scale-[1.35] object-cover object-[50%_42%]" />
+          </span>
           <div>
-            <div className="flex items-center gap-3">
-              <span className="relative block size-16 overflow-hidden rounded-full border-2 border-cream bg-white">
-                <Image src={settings.logo} alt="" fill sizes="64px" className="scale-[1.35] object-cover object-[50%_42%]" />
-              </span>
-              <div>
-                <p className="font-display text-3xl leading-none" dir="ltr">{settings.brandLatin}</p>
-                <p className="mt-1 text-sm text-cream/70">{s.tagline}</p>
-              </div>
-            </div>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-cream/70">{s.noCallsNotice}</p>
-            <ChefHat className="mt-6 w-20 text-cream/30" />
-          </div>
-
-          <div>
-            <h2 className="font-display text-xl text-butter">{t.footerSections}</h2>
-            <ul className="mt-3 space-y-2 text-sm">
-              {categories.map((c) => (
-                <li key={c.id}>
-                  <a href="#menu" className="text-cream/80 hover:text-cream">{c.emoji} {categoryName(c, lang)}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h2 className="font-display text-xl text-butter">{t.navContact}</h2>
-            <a
-              href={whatsappUrl(settings.whatsappNumber, "")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center gap-2 rounded-md border-2 border-cream px-3 py-2 text-sm font-bold hover:bg-cream hover:text-ink"
-            >
-              <WhatsAppIcon className="size-4" />
-              <span dir="ltr">+961 {settings.whatsappDisplay}</span>
-            </a>
-            <a href="mailto:amounacuisine95@gmail.com" className="mt-3 block text-sm text-cream/80 hover:text-cream" dir="ltr">
-              amounacuisine95@gmail.com
-            </a>
-            {links.length > 0 && (
-              <>
-                <p className="mt-5 text-sm text-cream/60">{t.followUs}</p>
-                <div className="mt-2 flex gap-2">
-                  {links.map(({ key, href, label, Icon }) => (
-                    <a key={key} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid size-10 place-items-center rounded-md border-2 border-cream hover:bg-cream hover:text-ink">
-                      <Icon className="size-5" />
-                    </a>
-                  ))}
-                </div>
-              </>
-            )}
+            <p className="chalk font-chalk text-[2.2rem] leading-none font-bold" dir="ltr" lang="en">
+              {settings.brandLatin}
+            </p>
+            <p className="mt-1.5 text-sm text-chalk/70">{s.tagline}</p>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-chalk/55">{s.noCallsNotice}</p>
           </div>
         </div>
-        <p className="mx-auto mt-10 max-w-6xl border-t border-cream/15 px-4 pt-5 text-xs text-cream/50">
+
+        <div>
+          <h2 className="chalk font-chalk text-[calc(1.6rem*var(--cs))] text-chalk-yellow">{t.navContact}</h2>
+          <a
+            href={whatsappUrl(settings.whatsappNumber, "")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 flex min-h-11 w-fit items-center gap-2 font-semibold text-chalk-mint hover:text-chalk"
+          >
+            <WhatsAppIcon className="size-5" />
+            <span dir="ltr">+961 {settings.whatsappDisplay}</span>
+          </a>
+          <a href="mailto:amounacuisine95@gmail.com" className="flex min-h-11 w-fit items-center text-sm text-chalk/75 hover:text-chalk" dir="ltr">
+            amounacuisine95@gmail.com
+          </a>
+          {links.length > 0 && (
+            <div className="mt-3 flex items-center gap-2">
+              <span className="text-sm text-chalk/55">{t.followUs}</span>
+              {links.map(({ key, href, label, Icon }) => (
+                <a key={key} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="chalk-box grid size-11 place-items-center text-chalk/85 hover:text-chalk-yellow">
+                  <Icon className="size-5" />
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="relative px-5 pb-4 md:px-10">
+        <HatDoodle className="chalky absolute end-6 bottom-6 w-20 text-chalk/20 md:end-12" />
+        <p className="text-xs text-chalk/40">
           © {new Date().getFullYear()} {settings.brandLatin} · {t.footerNote}
         </p>
+      </div>
+
+      {/* the chalk ledge along the bottom of the frame */}
+      <div className="wood relative flex h-7 items-end gap-3 px-6 shadow-[0_-3px_6px_rgba(0,0,0,0.35)] md:px-12" aria-hidden>
+        {STICKS.map(([color, shape], i) => (
+          <span key={i} className={`mb-2 block h-2.5 rounded-[3px] shadow-[0_2px_1px_rgba(0,0,0,0.35)] ${color} ${shape}`} />
+        ))}
+        <span className="ms-auto mb-1.5 block h-5 w-20 rounded-[3px] bg-[linear-gradient(#7a5638_0_45%,#ddd6c8_45%)] shadow-[0_3px_2px_rgba(0,0,0,0.4)]" />
       </div>
     </footer>
   );
